@@ -13,17 +13,17 @@ public class Product {
     private String name;
     private String unit;
     private String origin;
-    private int price;
+    private String price;
 
     public Product() {
         this.id = "";
         this.name = "";
         this.unit = "";
         this.origin = "";
-        this.price = 0;
+        this.price = "";
     }
 
-    public Product(String id, String name, String unit, String origin, int price) {
+    public Product(String id, String name, String unit, String origin, String price) {
         this.id = id;
         this.name = name;
         this.unit = unit;
@@ -63,11 +63,11 @@ public class Product {
         this.origin = origin;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

@@ -12,12 +12,16 @@ public class Customer {
     private String id;
     private String name;
     private String address;
-    private int phone;
+    private String phone;
 
     public Customer() {
+        this.id = "";
+        this.name = "";
+        this.address = "";
+        this.phone = "";
     }
 
-    public Customer(String id, String name, String address, int phone) {
+    public Customer(String id, String name, String address, String phone) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -48,11 +52,11 @@ public class Customer {
         this.address = address;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -61,4 +65,7 @@ public class Customer {
         return "Customer{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + '}';
     }
     
+    public String toFile() {
+        return id + "," + name + "," + address + "," + phone;
+    }
 }
