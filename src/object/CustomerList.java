@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import validate.Input;
 
 /**
  *
@@ -23,6 +24,56 @@ public class CustomerList extends ArrayList<Customer> {
 
     String filePath = "src\\data\\customers.txt";
     File file = new File(filePath);
+    Input input = new Input();
+
+    public int find(String customerID) {
+        for (Customer customer : this) {
+            if (customer.getId().equals(customerID)) {
+                return this.indexOf(customer);
+            }
+        }
+        return -1;
+    }
+
+    public void search() {
+        String customerID = input.string("Input customer ID your want to search: ");
+        int customerIndex = this.find(customerID);
+        if (customerIndex == -1) {
+            System.err.println("This customer does not exist");
+        } else {
+            System.out.println(this.get(customerIndex));
+        }
+    }
+
+    public void add() {
+        boolean isCreateContinuously;
+        do {
+            String id = input.customerID("Input customer ID: ", this);
+            String name = input.string("Input customer's name: ");
+            String address = input.string("Input customer's address: ");
+            String phone = input.customerPhone("Input customer's phone: ");
+            Customer customer = new Customer(id, name, address, phone);
+            this.add(customer);
+
+            isCreateContinuously = input.yesNo(true);
+        } while (isCreateContinuously);
+    }
+
+    public void update() {
+        String customerID = input.string("Input customer ID your want to search: ");
+        int customerIndex = this.find(customerID);
+        if (customerIndex == -1) {
+            System.err.println("This customer does not exist");
+        } else {
+            String id = input.customerID("Input customer ID: ", this);
+            String name = input.string("Input customer's name: ");
+            String address = input.string("Input customer's address: ");
+            String phone = input.customerPhone("Input customer's phone: ");
+            Customer customer = new Customer(id, name, address, phone);
+            this.set(customerIndex, customer);
+            System.out.println("Update successfully!");
+        }
+    }
 
     public CustomerList readFile() {
         if (!file.exists()) {

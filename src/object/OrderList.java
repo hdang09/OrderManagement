@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import validate.Input;
 
 /**
  *
@@ -23,6 +24,78 @@ public class OrderList extends ArrayList<Order> {
 
     String filePath = "src\\data\\orders.txt";
     File file = new File(filePath);
+    Input input = new Input();
+    
+    public int find(String orderID) {
+        for (Order order : this) {
+            if (order.getOrderID().equals(orderID)) {
+                return this.indexOf(order);
+            }
+        }
+        return -1;
+    }
+
+    public void add(CustomerList customerList, ProductList productList) {
+        boolean isCreateContinuously;
+        do {
+            String orderID = input.orderID("Input order ID: ", this);
+            String customerID = input.findCustomerID("Input customer ID your want to choose: ", customerList);
+            String productID = input.findProductId("Input product ID you want to choose: ", productList);
+            int quantity = input.number("Input order's quantity: ");
+            String date = input.string("Input order's date: ");
+            Order order = new Order(orderID, customerID, productID, quantity, date, false);
+            this.add(order);
+
+            isCreateContinuously = input.yesNo(true);
+        } while (isCreateContinuously);
+    }
+
+    public void update() {
+        boolean isContinueSubmenu = true;
+        do {
+            System.out.println();
+            System.out.println("----------------- 10. Update an Order -----------------");
+            System.out.println("| 1. Update an Order based on its ID                  |");
+            System.out.println("| 2. Delete an Order based on its ID                  |");
+            System.out.println("| Others- Go back to menu                             |");
+            System.out.println("-------------------------------------------------------");
+
+            int choice = input.choice("Your choice: ");
+            System.out.println();
+            switch (choice) {
+                case 1 -> {
+                    String orderID = input.string("Input order ID you want to update: ");
+                    int orderIndex = this.find(orderID);
+                    if (orderIndex == -1) {
+                        System.err.println("Order ID is not exist");
+                    } else {
+                        boolean status = this.get(orderIndex).isStatus();
+                        System.out.println("Do you want to change status to " + !status + "?");
+                        boolean changeChoice = input.yesNo(false);
+                        if (changeChoice) {
+                            this.get(orderIndex).setStatus(!status);
+                        }
+                    }
+                }
+                case 2 -> {
+                    String orderID = input.string("Input order ID you want to update: ");
+                    int orderIndex = this.find(orderID);
+                    
+                    if (orderIndex == -1) {
+                        System.err.println("Order ID is not exist");
+                    } else {
+                        System.out.println("Are you sure to delete this order?");
+                        boolean deleteChoice = input.yesNo(false);
+                        if (deleteChoice) {
+                            this.remove(orderIndex);
+                        }
+                    }
+                }
+                default ->
+                    isContinueSubmenu = false;
+            }
+        } while (isContinueSubmenu);
+    }
 
     public OrderList readFile() {
         String line;

@@ -15,8 +15,11 @@ public class Input {
 
     Scanner sc = new Scanner(System.in).useDelimiter("\n");
     boolean wrong;
+    String customerIDRegex = "[C]{1}\\d{3}";
+    String nameRegex = ".{5,30}";
+    String bookIdRegex = "[B]{1}\\d{5}";
 
-    public String string(String message) {
+        public String string(String message) {
         do {
             wrong = true;
             System.out.print(message);
@@ -115,6 +118,7 @@ public class Input {
         return "";
     }
 
+
     public String customerPhone(String message) {
         String phoneRegex = "\\d{10,12}";
         do {
@@ -157,6 +161,28 @@ public class Input {
         } while (wrong);
 
         return "";
+    }
+
+    public int findOrderIndexByID(String message, ArrayList<Order> orderList) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String id = sc.next();
+
+//            if (Pattern.matches(bookIdRegex, id)) {
+            for (int i = 0; i < orderList.size(); i++) {
+                if (orderList.get(i).getOrderID().equals(id)) {
+                    return i;
+                }
+            }
+            System.err.println("Order does not exist");
+//            } else {
+//                wrong = true;
+//                System.err.println("Book’s Id has pattern 'Bxxxxx', with xxxxx is five digits");
+//            }s
+        } while (wrong);
+
+        return -1;
     }
 
     public String findProductId(String message, ArrayList<Product> productList) {
