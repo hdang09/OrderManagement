@@ -20,10 +20,19 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class CustomerList extends ArrayList<Customer> {
+
     String filePath = "src\\data\\customers.txt";
     File file = new File(filePath);
 
     public CustomerList readFile() {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(CustomerList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
@@ -51,12 +60,15 @@ public class CustomerList extends ArrayList<Customer> {
             this.forEach(customer -> {
                 try {
                     bw.write(customer.toFile());
+                    bw.newLine();
                 } catch (IOException ex) {
                     Logger.getLogger(CustomerList.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
+            System.out.println("Write to file successfully!");
+            bw.close();
         } catch (Exception e) {
+            System.err.println("Error while writing to file!");
         }
     }
-    
 }

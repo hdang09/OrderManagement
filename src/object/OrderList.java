@@ -5,9 +5,11 @@
 package object;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -53,5 +55,21 @@ public class OrderList extends ArrayList<Order> {
                 System.out.println(order.toString());
             }
         });
+    }
+
+    public void saveToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            this.forEach(customer -> {
+                try {
+                    bw.write(customer.toFile());
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderList.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            System.out.println("Write to file successfully!");
+            bw.close();
+        } catch (Exception e) {
+            System.err.println("Error while writing to file!");
+        }
     }
 }

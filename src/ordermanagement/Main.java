@@ -40,8 +40,8 @@ public class Main {
             System.out.println("| 8. List all pending Orders                             |");
             System.out.println("| 9. Add an Order                                        |");
             System.out.println("| 10. Update an Order                                    |");
-            System.out.println("| 10.1. Update an Order based on its ID                  |");
-            System.out.println("| 10.2. Delete an Order based on its ID                  |");
+//            System.out.println("| 10.1. Update an Order based on its ID                  |");
+//            System.out.println("| 10.2. Delete an Order based on its ID                  |");
             System.out.println("| 11. Save Orders to file, named orders.txt              |");
             System.out.println("| Others- Quit                                           |");
             System.out.println("---------------------------------------------------------");
@@ -73,7 +73,7 @@ public class Main {
                         Customer customer = new Customer(id, name, address, phone);
                         customerList.add(customer);
 
-                        isCreateContinuously = input.isCreateContinuously();
+                        isCreateContinuously = input.yesNo(true);
                     } while (isCreateContinuously);
                 }
                 case 5 -> {
@@ -103,14 +103,55 @@ public class Main {
                     do {
                         String orderID = input.orderID("Input order ID: ", orderList);
                         String customerID = input.findCustomerID("Input customer ID your want to choose: ", customerList);
-                        String productID = input.findProductId("Input product ID you want to choose", productList);
+                        String productID = input.findProductId("Input product ID you want to choose: ", productList);
                         int quantity = input.number("Input order's quantity: ");
                         String date = input.string("Input order's date: ");
                         Order order = new Order(orderID, customerID, productID, quantity, date, false);
                         orderList.add(order);
 
-                        isCreateContinuously = input.isCreateContinuously();
+                        isCreateContinuously = input.yesNo(true);
                     } while (isCreateContinuously);
+                }
+                case 10 -> {
+                    boolean isContinueSubmenu = true;
+                    do {
+                        System.out.println();
+                        System.out.println("----------------- 10. Update an Order -----------------");
+                        System.out.println("| 1. Update an Order based on its ID                  |");
+                        System.out.println("| 2. Delete an Order based on its ID                  |");
+                        System.out.println("| Others- Go back to menu                             |");
+                        System.out.println("-------------------------------------------------------");
+
+                        int subChoice = input.choice("Your choice: ");
+                        System.out.println();
+                        switch (subChoice) {
+                            case 1 -> {
+                                int orderIndex = input.findOrderIndexByID("Input order ID you want to update: ", orderList);
+                                if (orderIndex != -1) {
+                                    boolean status = orderList.get(orderIndex).isStatus();
+                                    System.out.println("Do you want to change status to " + !status + "?");
+                                    boolean changeChoice = input.yesNo(false);
+                                    if (changeChoice) {
+                                        orderList.get(orderIndex).setStatus(!status);
+                                    }
+                                }
+                            }
+                            case 2 -> {
+                                int orderIndex = input.findOrderIndexByID("Input order ID you want to update: ", orderList);
+                                if (orderIndex != -1) {
+                                    System.out.println("Are you sure to delete this order?");
+                                    boolean deleteChoice = input.yesNo(false);
+                                    if (deleteChoice) {
+                                        orderList.remove(orderIndex);
+                                    }
+                                }
+                            }
+                            default -> isContinueSubmenu = false;
+                        }
+                    } while (isContinueSubmenu);
+                }
+                case 11 -> {
+                    orderList.saveToFile();
                 }
                 default -> {
                     System.out.println("Good bye! Have a nice day!");

@@ -20,7 +20,7 @@ public class Input {
     String bookIdRegex = "[B]{1}\\d{5}";
 
     public int choice(String message) {
-        String choiceRegex = "\\d";
+        String choiceRegex = "^\\d+$";
         do {
             wrong = true;
             System.out.print(message);
@@ -87,7 +87,7 @@ public class Input {
 
         return "";
     }
-    
+
     public String string(String message) {
         do {
             wrong = true;
@@ -104,11 +104,11 @@ public class Input {
 
     public int number(String message) {
         String numberRegex = "\\d";
-        do {            
+        do {
             wrong = true;
             System.out.print(message);
             String number = sc.next();
-            
+
             if (Pattern.matches(numberRegex, number)) {
                 return Integer.parseInt(number);
             } else {
@@ -181,7 +181,7 @@ public class Input {
             for (Order order : orderList) {
                 if (order.getOrderID().equals(id)) {
                     wrong = true;
-                    System.err.println("Book’s id is not allowed to duplicate");
+                    System.err.println("Order’s id is not allowed to duplicate");
                     break;
                 }
             }
@@ -196,6 +196,28 @@ public class Input {
         } while (wrong);
 
         return "";
+    }
+
+    public int findOrderIndexByID(String message, ArrayList<Order> orderList) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String id = sc.next();
+
+//            if (Pattern.matches(bookIdRegex, id)) {
+            for (int i = 0; i < orderList.size(); i++) {
+                if (orderList.get(i).getOrderID().equals(id)) {
+                    return i;
+                }
+            }
+            System.err.println("Order does not exist");
+//            } else {
+//                wrong = true;
+//                System.err.println("Book’s Id has pattern 'Bxxxxx', with xxxxx is five digits");
+//            }s
+        } while (wrong);
+
+        return -1;
     }
 
     public String findProductId(String message, ArrayList<Product> productList) {
@@ -307,8 +329,10 @@ public class Input {
 //
 //        return "";
 //    }
-    public boolean isCreateContinuously() {
-        System.out.println("Do you want to create new customer continuously or going back to the main menu?");
+    public boolean yesNo(boolean isCreateContinuously) {
+        if (isCreateContinuously) {
+            System.out.println("Do you want to create new customer continuously or going back to the main menu?");
+        }
         do {
             wrong = false;
             System.out.print("Your choice (Y/N): ");

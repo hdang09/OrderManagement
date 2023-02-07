@@ -8,7 +8,7 @@ package object;
  *
  * @author Admin
  */
-public class Order{
+public class Order {
 
     private String orderID;
     private String customerID;
@@ -88,9 +88,12 @@ public class Order{
         return "Order{" + "orderID=" + orderID + ", customerID=" + customerID + ", productID=" + productID + ", quantity=" + quantity + ", date=" + date + ", status=" + status + '}';
     }
 
+    public String toFile() {
+        return orderID + "," + customerID + "," + productID + "," + quantity + "," + date + "," + status;
+    }
+
 //    @Override
 //    public int compareTo(Order o) {
 //        return name
 //    }
-
 }

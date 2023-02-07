@@ -5,6 +5,7 @@
 package object;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,10 +19,20 @@ import java.util.logging.Logger;
  */
 public class ProductList extends ArrayList<Product> {
 
+    String filePath = "src\\data\\products.txt";
+    File file = new File(filePath);
+
     public ProductList readFile() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("src\\data\\products.txt"));
-            String line;
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(CustomerList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
                 String words[] = line.split(",");
                 String id = words[0];
@@ -39,7 +50,7 @@ public class ProductList extends ArrayList<Product> {
         }
         return this;
     }
-    
+
     public void print() {
         this.forEach(System.out::println);
     }
