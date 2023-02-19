@@ -48,7 +48,7 @@ public class Main {
                 case 4 -> customerList.add();
                 case 5 -> customerList.update();
                 case 6 -> customerList.saveToFile();
-                case 7 -> orderList.print();
+                case 7 -> orderList.print(customerList);
                 case 8 -> orderList.printPendingOrders();
                 case 9 -> orderList.add(customerList, productList);
                 case 10 -> orderList.update();

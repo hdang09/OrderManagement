@@ -19,30 +19,50 @@ public class Input {
     public String string(String message) {
         do {
             wrong = true;
+
             System.out.print(message);
             String string = sc.next();
-            if (string.isEmpty()) {
-                System.err.println("Fields do not allow to contain null value");
-            } else {
+
+            if (!string.isEmpty()) {
                 return string;
             }
+
+            System.err.println("Fields do not allow to contain null value");
         } while (wrong);
+
         return "";
+    }
+
+    public String updateString(String message, String prevValue) {
+        do {
+            wrong = true;
+
+            System.out.print(message);
+            String string = sc.next();
+
+            if (string.isEmpty()) {
+                return prevValue;
+            }
+
+            return string;
+        } while (wrong);
     }
 
     public int number(String message) {
         String numberRegex = "\\d";
         do {
             wrong = true;
+
             System.out.print(message);
             String number = sc.next();
 
             if (Pattern.matches(numberRegex, number)) {
                 return Integer.parseInt(number);
-            } else {
-                System.err.println("Please input a number!");
             }
+
+            System.err.println("Please input a number!");
         } while (wrong);
+
         return 0;
     }
 
@@ -55,10 +75,11 @@ public class Input {
 
             if (Pattern.matches(choiceRegex, choice)) {
                 return Integer.parseInt(choice);
-            } else {
-                System.err.println("Please input a number!");
             }
+
+            System.err.println("Please input a number!");
         } while (wrong);
+
         return 0;
     }
 
@@ -85,6 +106,33 @@ public class Input {
                 return id;
             }
         } while (wrong);
+
+        return "";
+    }
+
+    public String updateCustomerID(String message, ArrayList<Customer> customerList, String prevValue) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String id = sc.next();
+
+            if (id.isBlank()) {
+                return prevValue;
+            }
+
+            for (Customer customer : customerList) {
+                if (customer.getId().equals(id)) {
+                    wrong = true;
+                    System.err.println("The customer’s ID field is not allowed to duplicate in the database.");
+                    break;
+                }
+            }
+
+            if (!wrong) {
+                return id;
+            }
+        } while (wrong);
+
         return "";
     }
 
@@ -97,19 +145,13 @@ public class Input {
             System.out.print(message);
             String id = sc.next();
 
-//            if (Pattern.matches(customerIDRegex, id)) {
             for (Customer customer : customerList) {
                 if (customer.getId().equals(id)) {
                     return id;
                 }
             }
-            System.err.println("This customer does not exist");
-//                customerList.forEach(p -> System.out.print(p.getId() + " "));
-//                System.out.println();
-//            } else {
-//                System.err.println("Publisher’s Id has pattern 'Pxxxxx', with xxxxx is five digits");
-//            }
 
+            System.err.println("This customer does not exist");
         } while (wrong);
 
         return "";
@@ -124,9 +166,30 @@ public class Input {
 
             if (Pattern.matches(phoneRegex, phone)) {
                 return phone;
-            } else {
-                System.err.println("The phone is a number string that has a length from 10 to 12");
             }
+
+            System.err.println("The phone is a number string that has a length from 10 to 12");
+        } while (wrong);
+
+        return "";
+    }
+
+    public String updateCustomerPhone(String message, String prevValue) {
+        String phoneRegex = "\\d{10,12}";
+        do {
+            wrong = true;
+            System.out.print(message);
+            String phone = sc.next();
+
+            if (phone.isBlank()) {
+                return prevValue;
+            }
+
+            if (Pattern.matches(phoneRegex, phone)) {
+                return phone;
+            }
+
+            System.err.println("The phone is a number string that has a length from 10 to 12");
         } while (wrong);
 
         return "";
@@ -188,17 +251,21 @@ public class Input {
         if (isCreateContinuously) {
             System.out.println("Do you want to create new customer continuously or going back to the main menu?");
         }
+
         do {
             wrong = false;
+
             System.out.print("Your choice (Y/N): ");
             String choice = sc.next().toUpperCase();
             wrong = !choice.equals("Y") && !choice.equals("N");
-            if (wrong) {
-                System.err.println("Please input again!");
-            } else {
+
+            if (!wrong) {
                 return choice.equals("Y");
             }
+
+            System.err.println("Please input again!");
         } while (wrong);
+
         return false;
     }
 }

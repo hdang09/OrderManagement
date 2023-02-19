@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import validate.Input;
@@ -118,8 +119,18 @@ public class OrderList extends ArrayList<Order> {
         return this;
     }
 
-    public void print() {
-        this.forEach(System.out::println);
+    public void print(ArrayList<Customer> customerList) {
+        Collections.sort(customerList);
+//        customerList.forEach(System.out::println);
+//        System.out.println("");
+        
+        for (Customer customer : customerList) {
+            for (Order order : this) {
+                if (order.getCustomerID().equals(customer.getId())) {
+                    System.out.println(order);
+                }
+            }
+        }
     }
 
     public void printPendingOrders() {

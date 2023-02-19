@@ -38,6 +38,7 @@ public class CustomerList extends ArrayList<Customer> {
     public void search() {
         String customerID = input.string("Input customer ID your want to search: ");
         int customerIndex = this.find(customerID);
+        
         if (customerIndex == -1) {
             System.err.println("This customer does not exist");
         } else {
@@ -62,13 +63,14 @@ public class CustomerList extends ArrayList<Customer> {
     public void update() {
         String customerID = input.string("Input customer ID your want to search: ");
         int customerIndex = this.find(customerID);
+        
         if (customerIndex == -1) {
             System.err.println("This customer does not exist");
         } else {
-            String id = input.customerID("Input customer ID: ", this);
-            String name = input.string("Input customer's name: ");
-            String address = input.string("Input customer's address: ");
-            String phone = input.customerPhone("Input customer's phone: ");
+            String id = input.updateCustomerID("Input customer ID: ", this, this.get(customerIndex).getId());
+            String name = input.updateString("Input customer's name: ", this.get(customerIndex).getName());
+            String address = input.updateString("Input customer's address: ", this.get(customerIndex).getAddress());
+            String phone = input.updateCustomerPhone("Input customer's phone: ", this.get(customerIndex).getPhone());
             Customer customer = new Customer(id, name, address, phone);
             this.set(customerIndex, customer);
             System.out.println("Update successfully!");

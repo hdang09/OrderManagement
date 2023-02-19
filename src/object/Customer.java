@@ -8,7 +8,7 @@ package object;
  *
  * @author Admin
  */
-public class Customer {
+public class Customer implements Comparable<Customer>{
     private String id;
     private String name;
     private String address;
@@ -67,5 +67,15 @@ public class Customer {
     
     public String toFile() {
         return id + "," + name + "," + address + "," + phone;
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+//        String names1[] = name.split(" ");
+//        String name1 = names1[names1.length - 1];
+//        String names2[] = o.getName().split(" ");
+//        String name2 = names2[names2.length - 1];
+        
+        return name.compareTo(o.getName());
     }
 }
