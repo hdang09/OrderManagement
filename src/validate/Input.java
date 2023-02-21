@@ -4,6 +4,8 @@
  */
 package validate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -16,14 +18,23 @@ public class Input {
     Scanner sc = new Scanner(System.in).useDelimiter("\n");
     boolean wrong;
 
+    // String can be empty
     public String string(String message) {
+        System.out.print(message);
+        String string = sc.next();
+
+        return string;
+    }
+
+    // String can NOT be empty
+    public String stringNotEmpty(String message) {
         do {
             wrong = true;
 
             System.out.print(message);
             String string = sc.next();
 
-            if (!string.isEmpty()) {
+            if (!string.isBlank()) {
                 return string;
             }
 
@@ -33,40 +44,7 @@ public class Input {
         return "";
     }
 
-    public String updateString(String message, String prevValue) {
-        do {
-            wrong = true;
-
-            System.out.print(message);
-            String string = sc.next();
-
-            if (string.isEmpty()) {
-                return prevValue;
-            }
-
-            return string;
-        } while (wrong);
-    }
-
     public int number(String message) {
-        String numberRegex = "\\d";
-        do {
-            wrong = true;
-
-            System.out.print(message);
-            String number = sc.next();
-
-            if (Pattern.matches(numberRegex, number)) {
-                return Integer.parseInt(number);
-            }
-
-            System.err.println("Please input a number!");
-        } while (wrong);
-
-        return 0;
-    }
-
-    public int choice(String message) {
         String choiceRegex = "^\\d+$";
         do {
             wrong = true;
@@ -93,7 +71,7 @@ public class Input {
             for (Customer customer : customerList) {
                 if (customer.getId().equals(id)) {
                     wrong = true;
-                    System.err.println("The customer’s ID field is not allowed to duplicate in the database.");
+                    System.err.println("The customer's ID field is not allowed to duplicate in the database.");
                     break;
                 }
             }
@@ -110,20 +88,16 @@ public class Input {
         return "";
     }
 
-    public String updateCustomerID(String message, ArrayList<Customer> customerList, String prevValue) {
+    public String updateCustomerID(String message, ArrayList<Customer> customerList) {
         do {
             wrong = false;
             System.out.print(message);
             String id = sc.next();
 
-            if (id.isBlank()) {
-                return prevValue;
-            }
-
             for (Customer customer : customerList) {
                 if (customer.getId().equals(id)) {
                     wrong = true;
-                    System.err.println("The customer’s ID field is not allowed to duplicate in the database.");
+                    System.err.println("The customer's ID field is not allowed to duplicate in the database.");
                     break;
                 }
             }
@@ -136,19 +110,16 @@ public class Input {
         return "";
     }
 
-    public String findCustomerID(String message, ArrayList<Customer> customerList) {
+    public String findCustomerID(ArrayList<Customer> customerList) {
         do {
             wrong = true;
-            customerList.forEach(System.out::println);
-            System.out.println("-----------------");
+            for (int i = 0; i < customerList.size(); i++)
+                System.out.println(i + ". " + customerList.get(i));
+            System.out.println("------------------------------------------");
 
-            System.out.print(message);
-            String id = sc.next();
-
-            for (Customer customer : customerList) {
-                if (customer.getId().equals(id)) {
-                    return id;
-                }
+            int choice = number("Your choice: ");
+            if (choice < customerList.size()) {
+                return customerList.get(choice).getId();
             }
 
             System.err.println("This customer does not exist");
@@ -205,7 +176,7 @@ public class Input {
             for (Order order : orderList) {
                 if (order.getOrderID().equals(id)) {
                     wrong = true;
-                    System.err.println("Order’s id is not allowed to duplicate");
+                    System.err.println("Order's id is not allowed to duplicate");
                     break;
                 }
             }
@@ -222,36 +193,25 @@ public class Input {
         return "";
     }
 
-    public String findProductId(String message, ArrayList<Product> productList) {
+    public String findProductId(ArrayList<Product> productList) {
         do {
             wrong = true;
-            productList.forEach(System.out::println);
-            System.out.println("-----------------");
+            for (int i = 0; i < productList.size(); i++)
+                System.out.println(i + ". " + productList.get(i));
+            System.out.println("------------------------------------------");
 
-            System.out.print(message);
-            String id = sc.next();
-
-//            if (Pattern.matches(bookIdRegex, id)) {
-            for (Product product : productList) {
-                if (product.getId().equals(id)) {
-                    return id;
-                }
+            int choice = number("Your choice: ");
+            if (choice < productList.size()) {
+                return productList.get(choice).getId();
             }
-            System.err.println("Product Id is not found: ");
-//            } else {
-//                System.err.println("Book’s Id has pattern 'Bxxxxx', with xxxxx is five digits");
-//            }
 
+            System.err.println("This customer does not exist");
         } while (wrong);
 
         return "";
     }
 
-    public boolean yesNo(boolean isCreateContinuously) {
-        if (isCreateContinuously) {
-            System.out.println("Do you want to create new customer continuously or going back to the main menu?");
-        }
-
+    public boolean yesNo() {
         do {
             wrong = false;
 
@@ -264,6 +224,41 @@ public class Input {
             }
 
             System.err.println("Please input again!");
+        } while (wrong);
+
+        return false;
+    }
+
+    public String date(String message) {
+        do {
+            System.out.print(message);
+            String date = sc.next().trim();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            try {
+                sdf.parse(date);
+                return date;
+            } catch (ParseException e) {
+                System.err.println("Wrnng input! Please type again!");
+            }
+
+        } while (wrong);
+
+        return "";
+    }
+    
+    public boolean orderStatus(String message) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String status = sc.next().trim();
+
+            if (status.isBlank()) return false;
+            if (status.equals("T")) return true;
+            if (status.equals("F")) return false;
+            
+            System.err.println("Wrong input, please type again!");
         } while (wrong);
 
         return false;

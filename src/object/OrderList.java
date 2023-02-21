@@ -26,7 +26,7 @@ public class OrderList extends ArrayList<Order> {
     String filePath = "src\\data\\orders.txt";
     File file = new File(filePath);
     Input input = new Input();
-    
+
     public int find(String orderID) {
         for (Order order : this) {
             if (order.getOrderID().equals(orderID)) {
@@ -37,22 +37,59 @@ public class OrderList extends ArrayList<Order> {
     }
 
     public void add(CustomerList customerList, ProductList productList) {
-        boolean isCreateContinuously;
+        boolean isContinue;
         do {
             String orderID = input.orderID("Input order ID: ", this);
-            String customerID = input.findCustomerID("Input customer ID your want to choose: ", customerList);
-            String productID = input.findProductId("Input product ID you want to choose: ", productList);
+            String customerID = input.findCustomerID(customerList);
+            String productID = input.findProductId(productList);
             int quantity = input.number("Input order's quantity: ");
-            String date = input.string("Input order's date: ");
-            Order order = new Order(orderID, customerID, productID, quantity, date, false);
+            String date = input.date("Input order's date (dd/MM/yyyy): ");
+            boolean status = input.orderStatus("Input order's status (Y: true, N: false)");
+            
+            Order order = new Order(orderID, customerID, productID, quantity, date, status);
             this.add(order);
 
-            isCreateContinuously = input.yesNo(true);
-        } while (isCreateContinuously);
+            System.out.println("Do you want to create new customer continuously or going back to the main menu?");
+            isContinue = input.yesNo();
+        } while (isContinue);
+    }
+
+    void updateOrder() {
+        String orderID = input.stringNotEmpty("Input order ID you want to update: ");
+        int orderIndex = this.find(orderID);
+        
+        if (orderIndex == -1) {
+            System.err.println("Order ID is not exist");
+            return;
+        }
+
+        boolean status = this.get(orderIndex).isStatus();
+        System.out.println("Do you want to change status to " + !status + "?");
+        boolean changeChoice = input.orderStatus("Your choice (Y/N): ");
+        if (changeChoice) {
+            this.get(orderIndex).setStatus(!status);
+        }
+
+    }
+
+    void delete() {
+        String orderID = input.stringNotEmpty("Input order ID you want to update: ");
+        int orderIndex = this.find(orderID);
+
+        if (orderIndex == -1) {
+            System.err.println("Order ID is not exist");
+            return;
+        }
+
+        System.out.println("Are you sure to delete this order?");
+        boolean deleteChoice = input.yesNo();
+        if (deleteChoice) {
+            this.remove(orderIndex);
+        }
     }
 
     public void update() {
-        boolean isContinueSubmenu = true;
+        boolean isContinue = true;
         do {
             System.out.println();
             System.out.println("----------------- 10. Update an Order -----------------");
@@ -61,55 +98,42 @@ public class OrderList extends ArrayList<Order> {
             System.out.println("| Others- Go back to menu                             |");
             System.out.println("-------------------------------------------------------");
 
-            int choice = input.choice("Your choice: ");
+            int choice = input.number("Your choice: ");
             System.out.println();
             switch (choice) {
-                case 1 -> {
-                    String orderID = input.string("Input order ID you want to update: ");
-                    int orderIndex = this.find(orderID);
-                    if (orderIndex == -1) {
-                        System.err.println("Order ID is not exist");
-                    } else {
-                        boolean status = this.get(orderIndex).isStatus();
-                        System.out.println("Do you want to change status to " + !status + "?");
-                        boolean changeChoice = input.yesNo(false);
-                        if (changeChoice) {
-                            this.get(orderIndex).setStatus(!status);
-                        }
-                    }
-                }
-                case 2 -> {
-                    String orderID = input.string("Input order ID you want to update: ");
-                    int orderIndex = this.find(orderID);
-                    
-                    if (orderIndex == -1) {
-                        System.err.println("Order ID is not exist");
-                    } else {
-                        System.out.println("Are you sure to delete this order?");
-                        boolean deleteChoice = input.yesNo(false);
-                        if (deleteChoice) {
-                            this.remove(orderIndex);
-                        }
-                    }
-                }
-                default ->
-                    isContinueSubmenu = false;
+                case 1 -> updateOrder();
+                case 2 -> delete();
+                default -> isContinue = false;
             }
-        } while (isContinueSubmenu);
+        } while (isContinue);
     }
 
     public OrderList readFile() {
+        // Create file if it don't exist
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(CustomerList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        // Read file
         String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
                 String words[] = line.split(",");
-                String orderID = words[0];
-                String customerID = words[1];
-                String productID = words[2];
-                int quantity = Integer.parseInt(words[3]);
-                String date = words[4];
-                boolean status = Boolean.parseBoolean(words[5]);
-                this.add(new Order(orderID, customerID, productID, quantity, date, status));
+                if (words.length < 5) continue;
+                
+                String orderID = words[0].trim();
+                String customerID = words[1].trim();
+                String productID = words[2].trim();
+                int quantity = Integer.parseInt(words[3].trim());
+                String date = words[4].trim();
+                boolean status = Boolean.parseBoolean(words[5].trim());
+                
+                Order order = new Order(orderID, customerID, productID, quantity, date, status);
+                this.add(order);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CustomerList.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,9 +145,7 @@ public class OrderList extends ArrayList<Order> {
 
     public void print(ArrayList<Customer> customerList) {
         Collections.sort(customerList);
-//        customerList.forEach(System.out::println);
-//        System.out.println("");
-        
+
         for (Customer customer : customerList) {
             for (Order order : this) {
                 if (order.getCustomerID().equals(customer.getId())) {
@@ -143,9 +165,10 @@ public class OrderList extends ArrayList<Order> {
 
     public void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            this.forEach(customer -> {
+            this.forEach(order -> {
                 try {
-                    bw.write(customer.toFile());
+                    bw.write(order.toFile());
+                    bw.newLine();
                 } catch (IOException ex) {
                     Logger.getLogger(OrderList.class.getName()).log(Level.SEVERE, null, ex);
                 }

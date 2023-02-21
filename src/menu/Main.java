@@ -40,7 +40,7 @@ public class Main {
             System.out.println("---------------------------------------------------------");
             System.out.println();
 
-            int choice = input.choice("Your choice: ");
+            int choice = input.number("Your choice: ");
             switch (choice) {
                 case 1 -> productList.print();
                 case 2 -> customerList.print();

@@ -35,6 +35,8 @@ public class ProductList extends ArrayList<Product> {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
                 String words[] = line.split(",");
+                if (words.length < 4) continue;
+                
                 String id = words[0];
                 String name = words[1];
                 String unit = words[2];

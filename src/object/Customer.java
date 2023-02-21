@@ -71,11 +71,11 @@ public class Customer implements Comparable<Customer>{
 
     @Override
     public int compareTo(Customer o) {
-//        String names1[] = name.split(" ");
-//        String name1 = names1[names1.length - 1];
-//        String names2[] = o.getName().split(" ");
-//        String name2 = names2[names2.length - 1];
+        String fullName1[] = name.split(" ");
+        String name1 = fullName1[fullName1.length - 1];
+        String fullName2[] = o.getName().split(" ");
+        String name2 = fullName2[fullName2.length - 1];
         
-        return name.compareTo(o.getName());
+        return name1.compareTo(name2);
     }
 }
