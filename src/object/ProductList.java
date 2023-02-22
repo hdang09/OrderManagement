@@ -23,6 +23,7 @@ public class ProductList extends ArrayList<Product> {
     File file = new File(filePath);
 
     public ProductList readFile() {
+        // Create file if it don't exist
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -31,6 +32,7 @@ public class ProductList extends ArrayList<Product> {
             }
         }
 
+        // Read file
         String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {

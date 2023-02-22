@@ -72,7 +72,7 @@ public class CustomerList extends ArrayList<Customer> {
             return;
         }
 
-        String id = input.updateCustomerID("Input customer ID you want to update: ", this);
+        String id = input.customerID("Input customer ID you want to update: ", this);
         String name = input.string("Input customer's name: ");
         String address = input.string("Input customer's address: ");
         String phone = input.updateCustomerPhone("Input customer's phone: ", this.get(customerIndex).getPhone());

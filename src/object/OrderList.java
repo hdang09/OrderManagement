@@ -44,7 +44,8 @@ public class OrderList extends ArrayList<Order> {
             String productID = input.findProductId(productList);
             int quantity = input.number("Input order's quantity: ");
             String date = input.date("Input order's date (dd/MM/yyyy): ");
-            boolean status = input.orderStatus("Input order's status (Y: true, N: false)");
+            System.out.println("Input order's status (Y: true, N: false)");
+            boolean status = input.yesNo();
             
             Order order = new Order(orderID, customerID, productID, quantity, date, status);
             this.add(order);
@@ -65,7 +66,7 @@ public class OrderList extends ArrayList<Order> {
 
         boolean status = this.get(orderIndex).isStatus();
         System.out.println("Do you want to change status to " + !status + "?");
-        boolean changeChoice = input.orderStatus("Your choice (Y/N): ");
+        boolean changeChoice = input.yesNo();
         if (changeChoice) {
             this.get(orderIndex).setStatus(!status);
         }
@@ -148,18 +149,16 @@ public class OrderList extends ArrayList<Order> {
 
         for (Customer customer : customerList) {
             for (Order order : this) {
-                if (order.getCustomerID().equals(customer.getId())) {
+                if (order.getCustomerID().equals(customer.getId())) 
                     System.out.println(order);
-                }
             }
         }
     }
 
     public void printPendingOrders() {
         this.forEach(order -> {
-            if (!order.isStatus()) {
+            if (!order.isStatus()) 
                 System.out.println(order.toString());
-            }
         });
     }
 

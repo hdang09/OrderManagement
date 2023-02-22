@@ -21,7 +21,7 @@ public class Input {
     // String can be empty
     public String string(String message) {
         System.out.print(message);
-        String string = sc.next();
+        String string = sc.next().trim();
 
         return string;
     }
@@ -32,7 +32,7 @@ public class Input {
             wrong = true;
 
             System.out.print(message);
-            String string = sc.next();
+            String string = sc.next().trim();
 
             if (!string.isBlank()) {
                 return string;
@@ -45,13 +45,13 @@ public class Input {
     }
 
     public int number(String message) {
-        String choiceRegex = "^\\d+$";
+        String numberRegex = "^\\d+$";
         do {
             wrong = true;
             System.out.print(message);
-            String choice = sc.next();
+            String choice = sc.next().trim();
 
-            if (Pattern.matches(choiceRegex, choice)) {
+            if (Pattern.matches(numberRegex, choice)) {
                 return Integer.parseInt(choice);
             }
 
@@ -65,34 +65,7 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next();
-
-//            if (Pattern.matches(customerIDRegex, id)) {
-            for (Customer customer : customerList) {
-                if (customer.getId().equals(id)) {
-                    wrong = true;
-                    System.err.println("The customer's ID field is not allowed to duplicate in the database.");
-                    break;
-                }
-            }
-//            } else {
-//                wrong = true;
-//                System.err.println("Publisher’s Id has pattern 'Pxxxxx', with xxxxx is five digits");
-//            }
-
-            if (!wrong) {
-                return id;
-            }
-        } while (wrong);
-
-        return "";
-    }
-
-    public String updateCustomerID(String message, ArrayList<Customer> customerList) {
-        do {
-            wrong = false;
-            System.out.print(message);
-            String id = sc.next();
+            String id = sc.next().trim();
 
             for (Customer customer : customerList) {
                 if (customer.getId().equals(id)) {
@@ -102,9 +75,7 @@ public class Input {
                 }
             }
 
-            if (!wrong) {
-                return id;
-            }
+            if (!wrong) return id;
         } while (wrong);
 
         return "";
@@ -133,7 +104,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String phone = sc.next();
+            String phone = sc.next().trim();
 
             if (Pattern.matches(phoneRegex, phone)) {
                 return phone;
@@ -150,7 +121,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String phone = sc.next();
+            String phone = sc.next().trim();
 
             if (phone.isBlank()) {
                 return prevValue;
@@ -170,9 +141,8 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next();
+            String id = sc.next().trim();
 
-//            if (Pattern.matches(bookIdRegex, id)) {
             for (Order order : orderList) {
                 if (order.getOrderID().equals(id)) {
                     wrong = true;
@@ -180,11 +150,7 @@ public class Input {
                     break;
                 }
             }
-//            } else {
-//                wrong = true;
-//                System.err.println("Book’s Id has pattern 'Bxxxxx', with xxxxx is five digits");
-//            }
-
+            
             if (!wrong) {
                 return id;
             }
@@ -213,17 +179,15 @@ public class Input {
 
     public boolean yesNo() {
         do {
-            wrong = false;
-
+            wrong = true;
             System.out.print("Your choice (Y/N): ");
-            String choice = sc.next().toUpperCase();
-            wrong = !choice.equals("Y") && !choice.equals("N");
+            String choice = sc.next().toUpperCase().trim();
 
-            if (!wrong) {
-                return choice.equals("Y");
-            }
-
-            System.err.println("Please input again!");
+            if (choice.isBlank()) return false;
+            if (choice.equals("Y")) return true;
+            if (choice.equals("N")) return false;
+            
+            System.err.println("Wrong input, please type again!");
         } while (wrong);
 
         return false;
@@ -231,6 +195,7 @@ public class Input {
 
     public String date(String message) {
         do {
+            wrong = true;
             System.out.print(message);
             String date = sc.next().trim();
 
@@ -246,21 +211,5 @@ public class Input {
         } while (wrong);
 
         return "";
-    }
-    
-    public boolean orderStatus(String message) {
-        do {
-            wrong = false;
-            System.out.print(message);
-            String status = sc.next().trim();
-
-            if (status.isBlank()) return false;
-            if (status.equals("T")) return true;
-            if (status.equals("F")) return false;
-            
-            System.err.println("Wrong input, please type again!");
-        } while (wrong);
-
-        return false;
     }
 }
