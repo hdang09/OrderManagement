@@ -157,7 +157,7 @@ public class OrderList extends ArrayList<Order> {
 
     public void printPendingOrders() {
         this.forEach(order -> {
-            if (!order.isStatus()) 
+            if (order.isStatus()) 
                 System.out.println(order.toString());
         });
     }
