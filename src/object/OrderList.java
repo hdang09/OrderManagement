@@ -43,7 +43,7 @@ public class OrderList extends ArrayList<Order> {
             String customerID = input.findCustomerID(customerList);
             String productID = input.findProductId(productList);
             int quantity = input.number("Input order's quantity: ");
-            String date = input.date("Input order's date (dd/MM/yyyy): ");
+            String date = input.date("Input order's date (MM/dd/yyyy): ");
             System.out.println("Input order's status (Y: true, N: false)");
             boolean status = input.yesNo();
             
@@ -56,8 +56,7 @@ public class OrderList extends ArrayList<Order> {
     }
 
     void updateOrder() {
-        String orderID = input.stringNotEmpty("Input order ID you want to update: ");
-        int orderIndex = this.find(orderID);
+        int orderIndex = input.findOrderIndexByID("Input order ID you want to update: ", this);
         
         if (orderIndex == -1) {
             System.err.println("Order ID is not exist");
@@ -74,8 +73,7 @@ public class OrderList extends ArrayList<Order> {
     }
 
     void delete() {
-        String orderID = input.stringNotEmpty("Input order ID you want to update: ");
-        int orderIndex = this.find(orderID);
+        int orderIndex = input.findOrderIndexByID("Input order ID you want to update: ", this);
 
         if (orderIndex == -1) {
             System.err.println("Order ID is not exist");

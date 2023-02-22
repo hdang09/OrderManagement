@@ -62,11 +62,11 @@ public class Customer implements Comparable<Customer>{
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + '}';
+        return "Customer{" + "id=" + id + ", name=" + name.toUpperCase() + ", address=" + address.toUpperCase() + ", phone=" + phone + '}';
     }
     
     public String toFile() {
-        return id + "," + name + "," + address + "," + phone;
+        return id + "," + name.toUpperCase() + "," + address.toUpperCase() + "," + phone;
     }
 
     @Override

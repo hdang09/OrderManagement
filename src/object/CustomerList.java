@@ -36,8 +36,7 @@ public class CustomerList extends ArrayList<Customer> {
     }
 
     public void search() {
-        String customerID = input.stringNotEmpty("Input customer ID your want to search: ");
-        int customerIndex = this.find(customerID);
+        int customerIndex = input.findCustomerIndexByID("Input customer ID your want to search: ", this);
 
         if (customerIndex == -1) {
             System.err.println("This customer does not exist");
@@ -64,8 +63,8 @@ public class CustomerList extends ArrayList<Customer> {
     }
 
     public void update() {
-        String customerID = input.stringNotEmpty("Input customer ID you want to search: ");
-        int customerIndex = this.find(customerID);
+        System.out.println("Input customer ID you want to search: ");
+        int customerIndex = input.findCustomerIndexByID("Input customer ID you want to search: ", this);
 
         if (customerIndex == -1) {
             System.err.println("This customer does not exist");
@@ -101,7 +100,7 @@ public class CustomerList extends ArrayList<Customer> {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
                 String words[] = line.split(",");
-                if (words.length < 3) continue;
+                if (words.length < 4) continue;
                 
                 String id = words[0].trim();
                 String name = words[1].trim();

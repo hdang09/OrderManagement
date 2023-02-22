@@ -17,6 +17,8 @@ public class Input {
 
     Scanner sc = new Scanner(System.in).useDelimiter("\n");
     boolean wrong;
+    String customerIDRegex = "[C]{1}\\d{3}";
+    String orderIDRegex = "[D]{1}\\d{3}";
 
     // String can be empty
     public String string(String message) {
@@ -67,6 +69,12 @@ public class Input {
             System.out.print(message);
             String id = sc.next().trim();
 
+            if (!Pattern.matches(customerIDRegex, id)) {
+                wrong = true;
+                System.err.println("Customer's Id has pattern 'Cxxx', with xxx is three digits");
+                continue;
+            }
+
             for (Customer customer : customerList) {
                 if (customer.getId().equals(id)) {
                     wrong = true;
@@ -75,17 +83,41 @@ public class Input {
                 }
             }
 
-            if (!wrong) return id;
+            if (!wrong) {
+                return id;
+            }
         } while (wrong);
 
         return "";
     }
 
+    public int findCustomerIndexByID(String message, ArrayList<Customer> customerList) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String id = sc.next().trim();
+
+            if (!Pattern.matches(customerIDRegex, id)) {
+                wrong = true;
+                System.err.println("Customer's Id has pattern 'Cxxx', with xxx is three digits");
+                continue;
+            }
+
+            for (int i = 0; i < customerList.size(); i++) {
+                if (customerList.get(i).getId().equals(id)) {
+                    return i;
+                }
+            }
+        } while (wrong);
+        return -1;
+    }
+
     public String findCustomerID(ArrayList<Customer> customerList) {
         do {
             wrong = true;
-            for (int i = 0; i < customerList.size(); i++)
+            for (int i = 0; i < customerList.size(); i++) {
                 System.out.println(i + ". " + customerList.get(i));
+            }
             System.out.println("------------------------------------------");
 
             int choice = number("Your choice: ");
@@ -143,6 +175,12 @@ public class Input {
             System.out.print(message);
             String id = sc.next().trim();
 
+            if (!Pattern.matches(orderIDRegex, id)) {
+                wrong = true;
+                System.err.println("Order's Id has pattern 'Dxxx', with xxx is three digits");
+                continue;
+            }
+
             for (Order order : orderList) {
                 if (order.getOrderID().equals(id)) {
                     wrong = true;
@@ -150,7 +188,7 @@ public class Input {
                     break;
                 }
             }
-            
+
             if (!wrong) {
                 return id;
             }
@@ -159,11 +197,52 @@ public class Input {
         return "";
     }
 
+    public String findOrderId(ArrayList<Order> orderList) {
+        do {
+            wrong = true;
+            for (int i = 0; i < orderList.size(); i++) {
+                System.out.println(i + ". " + orderList.get(i));
+            }
+            System.out.println("------------------------------------------");
+
+            int choice = number("Your choice: ");
+            if (choice < orderList.size()) {
+                return orderList.get(choice).getOrderID();
+            }
+
+            System.err.println("This customer does not exist");
+        } while (wrong);
+
+        return "";
+    }
+    
+    public int findOrderIndexByID(String message, ArrayList<Order> orderList) {
+        do {
+            wrong = false;
+            System.out.print(message);
+            String id = sc.next().trim();
+
+            if (!Pattern.matches(orderIDRegex, id)) {
+                wrong = true;
+                System.err.println("Order's Id has pattern 'Dxxx', with xxx is three digits");
+                continue;
+            }
+
+            for (int i = 0; i < orderList.size(); i++) {
+                if (orderList.get(i).getOrderID().equals(id)) {
+                    return i;
+                }
+            }
+        } while (wrong);
+        return -1;
+    }
+
     public String findProductId(ArrayList<Product> productList) {
         do {
             wrong = true;
-            for (int i = 0; i < productList.size(); i++)
+            for (int i = 0; i < productList.size(); i++) {
                 System.out.println(i + ". " + productList.get(i));
+            }
             System.out.println("------------------------------------------");
 
             int choice = number("Your choice: ");
@@ -183,10 +262,16 @@ public class Input {
             System.out.print("Your choice (Y/N): ");
             String choice = sc.next().toUpperCase().trim();
 
-            if (choice.isBlank()) return false;
-            if (choice.equals("Y")) return true;
-            if (choice.equals("N")) return false;
-            
+            if (choice.isBlank()) {
+                return false;
+            }
+            if (choice.equals("Y")) {
+                return true;
+            }
+            if (choice.equals("N")) {
+                return false;
+            }
+
             System.err.println("Wrong input, please type again!");
         } while (wrong);
 
@@ -199,7 +284,7 @@ public class Input {
             System.out.print(message);
             String date = sc.next().trim();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             sdf.setLenient(false);
             try {
                 sdf.parse(date);
