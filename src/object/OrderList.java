@@ -49,6 +49,7 @@ public class OrderList extends ArrayList<Order> {
             
             Order order = new Order(orderID, customerID, productID, quantity, date, status);
             this.add(order);
+            System.out.println("Add order successfully");
 
             System.out.println("Do you want to create new customer continuously or going back to the main menu?");
             isContinue = input.yesNo();
@@ -68,6 +69,7 @@ public class OrderList extends ArrayList<Order> {
         boolean changeChoice = input.yesNo();
         if (changeChoice) {
             this.get(orderIndex).setStatus(!status);
+            System.out.println("Update order successfully");
         }
 
     }
@@ -84,6 +86,7 @@ public class OrderList extends ArrayList<Order> {
         boolean deleteChoice = input.yesNo();
         if (deleteChoice) {
             this.remove(orderIndex);
+            System.out.println("Delete order successfully");
         }
     }
 

@@ -56,6 +56,7 @@ public class CustomerList extends ArrayList<Customer> {
             
             Customer customer = new Customer(id, name, address, phone);
             this.add(customer);
+            System.out.println("Add customer successfully");
 
             System.out.println("Do you want to create new customer continuously or going back to the main menu?");
             isContinue = input.yesNo();

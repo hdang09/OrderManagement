@@ -23,7 +23,7 @@ public class Input {
     // String can be empty
     public String string(String message) {
         System.out.print(message);
-        String string = sc.next().trim();
+        String string = sc.next().trim().replaceAll(",", "|");
 
         return string;
     }
@@ -34,7 +34,7 @@ public class Input {
             wrong = true;
 
             System.out.print(message);
-            String string = sc.next().trim();
+            String string = sc.next().trim().replaceAll(",", "|");
 
             if (!string.isBlank()) {
                 return string;
@@ -51,7 +51,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String choice = sc.next().trim();
+            String choice = sc.next().trim().replaceAll(",", "|");
 
             if (Pattern.matches(numberRegex, choice)) {
                 return Integer.parseInt(choice);
@@ -67,7 +67,7 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next().trim();
+            String id = sc.next().trim().replaceAll(",", "|");
 
             if (!Pattern.matches(customerIDRegex, id)) {
                 wrong = true;
@@ -95,7 +95,7 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next().trim();
+            String id = sc.next().trim().replaceAll(",", "|");
 
             if (!Pattern.matches(customerIDRegex, id)) {
                 wrong = true;
@@ -136,7 +136,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String phone = sc.next().trim();
+            String phone = sc.next().trim().replaceAll(",", "|");
 
             if (Pattern.matches(phoneRegex, phone)) {
                 return phone;
@@ -153,7 +153,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String phone = sc.next().trim();
+            String phone = sc.next().trim().replaceAll(",", "|");
 
             if (phone.isBlank()) {
                 return prevValue;
@@ -173,7 +173,7 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next().trim();
+            String id = sc.next().trim().replaceAll(",", "|");
 
             if (!Pattern.matches(orderIDRegex, id)) {
                 wrong = true;
@@ -220,7 +220,7 @@ public class Input {
         do {
             wrong = false;
             System.out.print(message);
-            String id = sc.next().trim();
+            String id = sc.next().trim().replaceAll(",", "|");
 
             if (!Pattern.matches(orderIDRegex, id)) {
                 wrong = true;
@@ -260,7 +260,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print("Your choice (Y/N): ");
-            String choice = sc.next().toUpperCase().trim();
+            String choice = sc.next().toUpperCase().trim().replaceAll(",", "|");
 
             if (choice.isBlank()) {
                 return false;
@@ -282,7 +282,7 @@ public class Input {
         do {
             wrong = true;
             System.out.print(message);
-            String date = sc.next().trim();
+            String date = sc.next().trim().replaceAll(",", "|");
 
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             sdf.setLenient(false);
